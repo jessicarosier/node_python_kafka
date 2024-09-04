@@ -1,0 +1,25 @@
+#This yml file is used to create a kafka and zookeeper container
+# It defines the services, zookeeper and kafka, and their respective images as well as some environment variables such as the broker id, the listeners, the advertised listeners, the zookeeper connect and the plain text listener
+#To run this file, use the command: docker-compose up -d
+
+version: "3"
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: 'kafka'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
