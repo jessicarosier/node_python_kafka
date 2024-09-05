@@ -1,6 +1,6 @@
-/* A producer writes messages to a topic. */
+/* A helloWorldProducer writes messages to a topic. */
 
-console.log('producer...');
+console.log('helloWorldProducer...');
 
 import { Kafka } from 'kafkajs';
 // const { Kafka } = require('kafkajs')
@@ -11,17 +11,17 @@ const kafka = new Kafka({
     brokers: ['localhost:9092'],
 })
 
-const producer = kafka.producer()
+const helloWorldProducer = kafka.producer()
 
-await producer.connect()
+await helloWorldProducer.connect()
 
 const message = {
-    value : 'Hello World from producer'
+    value : 'Hello World from helloWorldProducer'
 }
 
 async function testProducer(message) {
     try {
-        await producer.send({
+        await helloWorldProducer.send({
             topic: 'test',
             messages: [
                 { value: JSON.stringify(message) },

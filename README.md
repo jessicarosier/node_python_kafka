@@ -47,17 +47,17 @@ python create_topic.py
 
 - In the example, the topic name is "test". You can change it in the `create_topic.py` file.
 
-2. Then, you can run the producer and the consumer. To do this, run the following commands:
+2. Then, you can run the helloWorldProducer and the consumer. To do this, run the following commands:
 
 ```
-bash python producer.py
+bash python helloWorldProducer.py
 ```
 
 ```
 bash python consumer.py
 ```
 
-The producer will send messages to the topic and the consumer will consume the messages.
+The helloWorldProducer will send messages to the topic and the consumer will consume the messages.
 
 
 # References, useful links, documentation and example code

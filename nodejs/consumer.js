@@ -1,4 +1,4 @@
-/* A consumer reads messages from a topic. */
+/* A consumer reads messages from multiple topics. */
 
 console.log("consumer...");
 
@@ -9,15 +9,25 @@ const kafka = new Kafka({
     brokers: ["localhost:9092"],
 });
 
+// Define the topics to subscribe to
+const topics = ["test", "test1"];
+
 const consumer = kafka.consumer({groupId: "test-group"});
 
-await consumer.connect();
+async function run() {
+    await consumer.connect();
 
-await consumer.subscribe({topic: "test", fromBeginning: true});
+    // Subscribe to multiple topics
+    await consumer.subscribe({
+        topics: topics,
+        fromBeginning: true
+    });
 
+    await consumer.run({
+        eachMessage: async ({ topic, partition, message }) => {
+            console.log(`Received message: ${message.value} from topic: ${topic}`)
+        },
+    });
+}
 
-await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
-        console.log(`Received message: ${message.value}`)
-    },
-});
+run().catch(console.error);

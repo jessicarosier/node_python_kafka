@@ -1,44 +1,28 @@
-import json
-import os
-import shutil
 from kafka import KafkaConsumer
+import json
+
+print("consumer...")
+
+# Define the Kafka topics to subscribe to
+topics = ["test"]
 
 # Configure the Kafka consumer
 consumer = KafkaConsumer(
-    'test',
-    bootstrap_servers=['localhost:9092'],
-    group_id='kafka',
-    value_deserializer=lambda m: m.decode('utf-8'),
-    auto_offset_reset='earliest'
+    *topics,
+    bootstrap_servers=["localhost:9092"],
+    auto_offset_reset="earliest",
+    enable_auto_commit=True,
+    group_id="test-group",
+    value_deserializer=lambda x: json.loads(x.decode("utf-8"))
 )
 
-DESTINATION_DIR = '/Users/jessicarosier/IdeaProjects/svelte-projects/node_python_kafka/consumer_files'
-
-
-def copy_file(file_path, destination_dir):
-    try:
-        shutil.copy2(file_path, destination_dir)
-        print(f"File copied: {file_path} -> {destination_dir}")
-    except Exception as e:
-        print(f"Error copying file: {str(e)}")
-
-
-def process_message(message):
-    if isinstance(message.value, str):
-        try:
-            parsed_value = json.loads(message.value)
-            if isinstance(parsed_value, dict) and 'file_path' in parsed_value:
-                file_path = parsed_value['file_path']
-                copy_file(file_path, DESTINATION_DIR)
-            else:
-                print(f"Received invalid message: {message.value}")
-        except json.JSONDecodeError:
-            print(f"Invalid JSON string: {message.value}")
-    else:
-        print(f"Non-string value received: {message.value}")
-
-
-if __name__ == "__main__":
-    print(f"Kafka consumer started. Listening for messages on topic: test")
+# Message consumption loop
+try:
     for message in consumer:
-        process_message(message)
+        print(f"Received message: {message.value}")
+except KeyboardInterrupt:
+    print("Consumer stopped by user")
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
+finally:
+    consumer.close()
