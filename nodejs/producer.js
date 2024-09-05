@@ -3,6 +3,7 @@
 console.log('producer...');
 
 import { Kafka } from 'kafkajs';
+// const { Kafka } = require('kafkajs')
 
 
 const kafka = new Kafka({
@@ -14,22 +15,27 @@ const producer = kafka.producer()
 
 await producer.connect()
 
-async function helloWorldProducer() {
+const message = {
+    value : 'Hello World from producer'
+}
+
+async function testProducer(message) {
     try {
         await producer.send({
             topic: 'test',
             messages: [
-                {value: 'Hello KafkaJS user!'},
+                { value: JSON.stringify(message) },
             ],
         })
-        console.log('Message sent successfully')
+        console.log(`Sent message: ${message.value}`)
     } catch (error) {
         console.error(error)
     }
 }
 
 //call the function every 5 seconds forever
-
-setInterval(helloWorldProducer, 5000)
+setInterval(() => {
+    testProducer(message)
+} , 5000)
 
 

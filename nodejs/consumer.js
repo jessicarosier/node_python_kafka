@@ -15,10 +15,9 @@ await consumer.connect();
 
 await consumer.subscribe({topic: "test", fromBeginning: true});
 
+
 await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-        console.log({
-            value: message.value.toString(),
-        })
+        console.log(`Received message: ${message.value}`)
     },
 });
