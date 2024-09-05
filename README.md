@@ -2,6 +2,11 @@
 
 This is a simple example of how to use Kafka with Python.
 
+
+
+[Click here to learn more about Kafka](https://kafka.apache.org/intro)
+
+
 ## Requirements
 
 The `docker-compose.yml` file is already configured to run a Kafka instance. You just need to have Docker and Docker Compose installed.
@@ -58,3 +63,12 @@ bash python consumer.py
 
 
 The producer will send messages to the topic and the consumer will consume the messages.
+
+
+# References, useful links, documentation and example code
+
+- [Kafka documentation](https://kafka.apache.org/documentation/)
+- [Kafka Python documentation](https://kafka-python.readthedocs.io/en/master/index.html)
+- [Kafka Python examples](https://github.com/dpkp/kafka-python)
+- [Watchdog documentation](https://python-watchdog.readthedocs.io/en/stable/)
+- [Watchdog examples](https://github.com/gorakhargosh/watchdog)
