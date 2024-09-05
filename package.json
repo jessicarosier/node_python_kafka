@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:producer": "node nodejs/hello-world-producer.js",
+    "start:producer": "node nodejs/producer.js",
     "start:consumer": "node nodejs/consumer.js"
   },
   "author": "",

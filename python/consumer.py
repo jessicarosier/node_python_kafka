@@ -4,7 +4,7 @@ import json
 print("consumer...")
 
 # Define the Kafka topics to subscribe to
-topics = ["test"]
+topics = ["test", "hello-world", "goodbye-world"]
 
 # Configure the Kafka consumer
 consumer = KafkaConsumer(
