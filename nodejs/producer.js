@@ -67,7 +67,7 @@ async function main() {
         await producer.connect();
         await producer.startProducing();
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error running Kafka producer:", error);
         await producer.disconnect();
     }
 }

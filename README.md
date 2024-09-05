@@ -41,6 +41,7 @@ pip install -r requirements.txt
 
 - [Kafka documentation](https://kafka.apache.org/documentation/)
 - [Kafka Python documentation](https://kafka-python.readthedocs.io/en/master/index.html)
+- [KafkaJS documentation](https://kafka.js.org/docs/getting-started)
 - [Kafka Python examples](https://github.com/dpkp/kafka-python)
 - [Watchdog documentation](https://python-watchdog.readthedocs.io/en/stable/)
 - [Watchdog examples](https://github.com/gorakhargosh/watchdog)
