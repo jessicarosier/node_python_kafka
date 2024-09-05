@@ -48,7 +48,7 @@ def watch_directory(path):
 
 
 if __name__ == "__main__":
-    directory_to_watch = "/Users/jessicarosier/IdeaProjects/svelte-projects/node-kafka-producer-consumer/producer_files"
+    directory_to_watch = "/Users/jessicarosier/IdeaProjects/svelte-projects/node_python_kafka/producer_files"
     # Replace with your directory path
     print(f"Watching directory: {directory_to_watch} for new files...")
     watch_directory(directory_to_watch)

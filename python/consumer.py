@@ -12,7 +12,7 @@ consumer = KafkaConsumer(
     auto_offset_reset='earliest'
 )
 
-DESTINATION_DIR = '/Users/jessicarosier/IdeaProjects/svelte-projects/node-kafka-producer-consumer/consumer_files'
+DESTINATION_DIR = '/Users/jessicarosier/IdeaProjects/svelte-projects/node_python_kafka/consumer_files'
 
 
 def copy_file(file_path, destination_dir):
