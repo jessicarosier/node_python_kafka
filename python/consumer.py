@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 import json
 
-print("consumer...")
+print("Consumer...")
 
 # Define the Kafka topics to subscribe to
 topics = ["test", "hello-world", "goodbye-world"]
@@ -16,7 +16,7 @@ consumer = KafkaConsumer(
     value_deserializer=lambda x: json.loads(x.decode("utf-8"))
 )
 
-# Message consumption loop
+# Main loop - listen for messages to subscribed topics
 try:
     for message in consumer:
         print(f"Received message: {message.value}")

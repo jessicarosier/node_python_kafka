@@ -1,6 +1,5 @@
-/* A helloWorldProducer writes messages to a topic. */
 
-console.log('helloWorldProducer...');
+console.log('Producer...');
 
 import { Kafka } from 'kafkajs';
 
@@ -12,20 +11,21 @@ const kafka = new Kafka({
 
 const producer = kafka.producer()
 
-// Define topics to test the producer
+// Test data - to define multiple topics
 const topicConfigs = {
     'hello-world': () => ({
-        value: 'Hello World from helloWorldProducer',
+        value: 'Message from hello-world producer',
     }),
     'goodbye-world': () => ({
-        value: 'Goodbye World from producer',
-    }),
-    // Add more topics and their message generators as needed
+        value: 'Message from goodbye-world producer',
+    })
 };
 
+// Sends kafka message based on the topic passed in
 async function sendKafkaMessage(topic) {
     try {
-        const message = topicConfigs[topic] ? topicConfigs[topic]() : generateDefaultMessage(topic);
+        // grab the message that corresponds to the topic passed in
+        const message = topicConfigs[topic];
 
         await producer.send({
             topic: topic,
@@ -38,17 +38,14 @@ async function sendKafkaMessage(topic) {
     }
 }
 
-function generateDefaultMessage(topic) {
-    return {
-        value: `${topic}`,
-    };
-}
 
 async function startProducer() {
     await producer.connect();
 
-    const topics = Object.keys(topicConfigs);
+    //Define the topics to send messages to
+    const topics = ['hello-world', 'goodbye-world']
 
+    // Test sending messages to multiple topics
     setInterval(() => {
         topics.forEach(topic => sendKafkaMessage(topic));
     }, 5000);

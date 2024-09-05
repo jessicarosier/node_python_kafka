@@ -1,6 +1,5 @@
-/* A consumer reads messages from multiple topics. */
 
-console.log("consumer...");
+console.log("Sonsumer...");
 
 import { Kafka } from 'kafkajs';
 
@@ -10,7 +9,7 @@ const kafka = new Kafka({
 });
 
 // Define the topics to subscribe to
-const topics = ["test", "test1"];
+const topics = ["test", "hello-world", "goodbye-world"]
 
 const consumer = kafka.consumer({groupId: "test-group"});
 
