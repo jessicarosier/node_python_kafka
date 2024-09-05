@@ -1,54 +1,75 @@
+import {Kafka} from "kafkajs";
 
-console.log('Producer...');
-
-import { Kafka } from 'kafkajs';
-
-
-const kafka = new Kafka({
-    clientId: 'kafka',
-    brokers: ['localhost:9092'],
-})
-
-const producer = kafka.producer()
-
-// Test data - to define multiple topics
-const topicConfigs = {
-    'hello-world': () => ({
-        value: 'Message from hello-world producer',
-    }),
-    'goodbye-world': () => ({
-        value: 'Message from goodbye-world producer',
-    })
-};
-
-// Sends kafka message based on the topic passed in
-async function sendKafkaMessage(topic) {
-    try {
-        // grab the message that corresponds to the topic passed in
-        const message = topicConfigs[topic];
-
-        await producer.send({
-            topic: topic,
-            messages: [{ value: JSON.stringify(message) }],
+class KafkaProducer {
+    constructor(clientId = "kafka", brokers = ["localhost:9092"]) {
+        this.kafka = new Kafka({
+            clientId: clientId,
+            brokers: brokers,
         });
+        this.producer = this.kafka.producer();
+    }
 
-        console.log(`Sent message to topic ${topic}: ${JSON.stringify(message)}`);
-    } catch (error) {
-        console.error(`Error sending message to topic ${topic}:`, error);
+    async connect() {
+        await this.producer.connect();
+        console.log("Producer connected");
+    }
+
+    async disconnect() {
+        await this.producer.disconnect();
+        console.log("Producer disconnected");
+    }
+
+    getTestMessage(topic) {
+        const topicMessages = {
+            "hello-world": {
+                message: "Hello, world!"
+            },
+            "goodbye-world": {
+                message: "Goodbye, world!"
+            },
+        };
+
+        return topicMessages[topic].message;
+    }
+
+    async sendKafkaMessage(topic) {
+        try {
+
+            const message = this.getTestMessage(topic);
+
+            await this.producer.send({
+                topic: topic,
+                messages: [{value: JSON.stringify(message)}],
+            });
+
+            console.log(`Sent message to topic ${topic}: ${JSON.stringify(message)}`);
+        } catch (error) {
+            console.error(`Error sending message to topic ${topic}:`, error);
+        }
+    }
+
+
+    // Test the producer
+    async startProducing(interval = 5000) {
+        const topics = ["hello-world", "goodbye-world"];
+        setInterval(() => {
+            topics.forEach(topic => this.sendKafkaMessage(topic));
+        }, interval);
     }
 }
 
 
-async function startProducer() {
-    await producer.connect();
+// Main function for testing
+async function main() {
+    const producer = new KafkaProducer();
 
-    //Define the topics to send messages to
-    const topics = ['hello-world', 'goodbye-world']
-
-    // Test sending messages to multiple topics
-    setInterval(() => {
-        topics.forEach(topic => sendKafkaMessage(topic));
-    }, 5000);
+    try {
+        await producer.connect();
+        await producer.startProducing();
+    } catch (error) {
+        console.error("Error:", error);
+        await producer.disconnect();
+    }
 }
 
-startProducer().catch(console.error);
+main().catch(console.error);
