@@ -32,17 +32,34 @@ class KafkaProducer {
         return topicMessages[topic].message;
     }
 
+    // Make this method async and more dynamic
     async sendKafkaMessage(topic) {
         try {
-
             const message = this.getTestMessage(topic);
 
-            await this.producer.send({
+            const result = await this.producer.send({
                 topic: topic,
                 messages: [{value: JSON.stringify(message)}],
             });
-
+            if(result && result[0].errorCode === 0) {
             console.log(`Sent message to topic ${topic}: ${JSON.stringify(message)}`);
+            console.log("Result:", result);
+                // Example output of result:
+                // Result: [
+                //     {
+                //         topicName: 'goodbye-world',
+                //         partition: 0,
+                //         errorCode: 0,
+                //         baseOffset: '583',
+                //         logAppendTime: '-1',
+                //         logStartOffset: '0'
+                //     }
+                // ]
+                return result;
+            } else {
+                console.error(`Failed sending message to topic ${topic}:`, result);
+                return null;
+            }
         } catch (error) {
             console.error(`Error sending message to topic ${topic}:`, error);
         }
