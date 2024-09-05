@@ -2,40 +2,34 @@
 
 console.log('producer...');
 
-import Kafka from 'node-rdkafka';
+import { Kafka } from 'kafkajs';
 
-/* This stream will write messages to the Kafka topic. */
-const producer = Kafka.Producer.createWriteStream({
-  'metadata.broker.list': 'localhost:9092' // specify the Kafka broker per the yml file
-}, {}, {
-  topic: 'test'
-});
 
-stream.on('error', (err) => {
-  console.error('Error in our kafka stream');
-  console.error(err);
-});
+const kafka = new Kafka({
+    clientId: 'kafka',
+    brokers: ['localhost:9092'],
+})
 
-function queueMessage() {
+const producer = kafka.producer()
 
-  // Write a Hello World message to the Kafka topic.
-    const event = {
-        message: 'Hello World',
-        timestamp: new Date().toISOString
-    };
-  // Writes to the stream Kafka topic.
-  const success = producer.write(Buffer.from(JSON.stringify(event)));
-  if (success) {
-    console.log(`message queued (${JSON.stringify(event)})`);
-  } else {
-    console.log('Too many messages in the queue already..');
-  }
+await producer.connect()
+
+async function helloWorldProducer() {
+    try {
+        await producer.send({
+            topic: 'test',
+            messages: [
+                {value: 'Hello KafkaJS user!'},
+            ],
+        })
+        console.log('Message sent successfully')
+    } catch (error) {
+        console.error(error)
+    }
 }
 
+//call the function every 5 seconds forever
+
+setInterval(helloWorldProducer, 5000)
 
 
-
-// Write a random message to the Kafka topic every 3 seconds.
-setInterval(() => {
-  queueMessage();
-}, 3000);
