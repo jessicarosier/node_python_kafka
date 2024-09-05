@@ -72,3 +72,7 @@ The producer will send messages to the topic and the consumer will consume the m
 - [Kafka Python examples](https://github.com/dpkp/kafka-python)
 - [Watchdog documentation](https://python-watchdog.readthedocs.io/en/stable/)
 - [Watchdog examples](https://github.com/gorakhargosh/watchdog)
+
+-[Helpful walkthrough tutorial](https://towardsdatascience.com/getting-started-with-apache-kafka-in-python-604b3250aa05)
+
+-[Helpful tutorial using Node.js](https://www.youtube.com/watch?v=EiDLKECLcZw)
